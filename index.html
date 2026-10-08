@@ -998,7 +998,6 @@
                 <label style="font-family: var(--font-mono); font-size: 0.75rem;">SELECT BRITES BODY SPECIFICATION:</label>
                 <select id="brites-spec-select" onchange="updateBritesContext()">
                     <option value="brites-250">250ml / 200 neck — 12,144 / Pallet (528 / Row, 23 Rows)</option>
-                    <option value="brites-7.5">7.5 oz / 202 neck — 12,144 / Pallet (528 / Row, 23 Rows)</option>
                     <option value="brites-12-std">12 oz / 202 neck standard — 8,169 / Pallet (389 / Row, 21 Rows)</option>
                     <option value="brites-12-sleek">12 oz / 202 neck sleek — 8,096 / Pallet (506 / Row, 16 Rows)</option>
                     <option value="brites-16">16 oz / 202 neck — 6,224 / Pallet (389 / Row, 16 Rows)</option>
@@ -1186,14 +1185,6 @@
             filled: { P: 2400, R: 240, C: 12, U: 1, rows: 10, caseCt: 12, tcc: 200 },
             empty: { P: 8169, R: 389, U: 1, rows: 21, specName: "12 oz / 202 Neck" }
         },
-        "popz-seasonal-sleek": {
-            name: "SEASONAL POPZ (12-Pack / 7.5 oz Sleek)",
-            spec: "7.5 oz 200 // 12-Pack",
-            category: "Soda",
-            flavors: ["Red White & Blue", "Spiced Apple Cider", "Orange Vanilla"],
-            filled: { P: 2400, R: 240, C: 12, U: 1, rows: 10, caseCt: 12, tcc: 200 },
-            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "7.5 oz / 200 Neck Sleek" }
-        },
         "frost": {
             name: "FROST & SUMMER FROST (12-Pack / 16 oz 202)",
             spec: "16 oz 202 // 12-Pack",
@@ -1227,20 +1218,20 @@
             empty: { P: 8096, R: 506, U: 1, rows: 16, specName: "12 oz / 202 Neck Sleek" }
         },
         "natures-nectar-12": {
-            name: "NATURE'S NECTAR (12-Pack / 7.5 oz)",
-            spec: "7.5 oz (250ml) // 12-Pack",
+            name: "NATURE'S NECTAR (12-Pack / 250ml)",
+            spec: "250ml // 12-Pack",
             category: "Juice / Sparkling",
             flavors: ["Grapefruit", "Blackberry", "Clementine"],
             filled: { P: 2496, R: 312, C: 12, U: 1, rows: 8, caseCt: 12, tcc: 208 },
-            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "250ml / 7.5 oz / 200 Neck" }
+            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "250ml / 200 Neck" }
         },
         "natures-nectar-24": {
-            name: "NATURE'S NECTAR (24-Pack / 7.5 oz)",
-            spec: "7.5 oz (250ml) // 24-Pack",
+            name: "NATURE'S NECTAR (24-Pack / 250ml)",
+            spec: "250ml // 24-Pack",
             category: "Juice / Sparkling",
             flavors: ["Grapefruit", "Blackberry", "Clementine"],
             filled: { P: 2496, R: 312, C: 24, U: 1, rows: 8, caseCt: 24, tcc: 104 },
-            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "250ml / 7.5 oz / 200 Neck" }
+            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "250ml / 200 Neck" }
         },
         "bellevie-24": {
             name: "BELLE VIE (24-Pack / 12 oz 202)",
@@ -1257,14 +1248,6 @@
             flavors: ["Pure", "Lime", "Strawberry", "Blackberry", "Lemon", "Grapefruit"],
             filled: { P: 2400, R: 240, C: 12, U: 1, rows: 10, caseCt: 12, tcc: 200 },
             empty: { P: 8169, R: 389, U: 1, rows: 21, specName: "12 oz / 202 Neck" }
-        },
-        "mini": {
-            name: "MINI SODAS (24-Pack / 7.5 oz)",
-            spec: "7.5 oz 202 // 24-Pack",
-            category: "Mini Soda",
-            flavors: ["Cola", "Diet", "Citrus"],
-            filled: { P: 2496, R: 312, C: 24, U: 1, rows: 8, caseCt: 24, tcc: 104 },
-            empty: { P: 12144, R: 528, U: 1, rows: 23, specName: "7.5 oz / 202 Neck" }
         },
         "popz-tea": {
             name: "POPZ TEA (12-Pack / 12 oz Sleek)",
@@ -1287,7 +1270,6 @@
     /* Brites Empty Can Specifics */
     const britesSpecs = {
         "brites-250": { name: "250ml / 200 neck", P: 12144, R: 528, rows: 23 },
-        "brites-7.5": { name: "7.5 oz / 202 neck", P: 12144, R: 528, rows: 23 },
         "brites-12-std": { name: "12 oz / 202 neck standard", P: 8169, R: 389, rows: 21 },
         "brites-12-sleek": { name: "12 oz / 202 neck sleek", P: 8096, R: 506, rows: 16 },
         "brites-16": { name: "16 oz / 202 neck", P: 6224, R: 389, rows: 16 },
@@ -1468,8 +1450,8 @@
         { id: "waves", key: "waves", topClass: "plasma-top" },
         { id: "natures-nectar", key: "natures-nectar-12", topClass: "amber-top" },
         { id: "bellevie", key: "bellevie-24", topClass: "" },
-        { id: "mini", key: "mini", topClass: "emerald-top" },
-        { id: "tea", key: "popz-tea", topClass: "plasma-top" }
+        { id: "tea", key: "popz-tea", topClass: "plasma-top" },
+        { id: "vivee", key: "vivee", topClass: "emerald-top" }
     ];
 
     function buildMatrixGridCards() {
