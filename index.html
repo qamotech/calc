@@ -55,11 +55,11 @@
                 linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
             background-size: 100% 100%, 36px 36px, 36px 36px;
-            color: #d1dced;
+            color: #d8e6f8;
             font-family: var(--font-ui);
-            font-size: 16px;
+            font-size: 18px;
             margin: 0;
-            padding: 12px;
+            padding: 16px;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -104,7 +104,7 @@
             border-top: 2px solid var(--metal-highlight);
             border-bottom: 3px solid #000;
             border-radius: 8px;
-            padding: 16px;
+            padding: 18px;
             margin-bottom: 18px;
             position: relative;
             box-shadow: 
@@ -115,11 +115,11 @@
         }
 
         .mech-panel.electric-border {
-            border-color: rgba(0, 240, 255, 0.4);
+            border-color: rgba(0, 240, 255, 0.45);
             box-shadow: 
                 inset 0 1px 0 rgba(255, 255, 255, 0.15),
                 inset 0 0 20px rgba(0, 240, 255, 0.08),
-                0 0 18px rgba(0, 240, 255, 0.15),
+                0 0 18px rgba(0, 240, 255, 0.18),
                 0 8px 25px rgba(0, 0, 0, 0.7);
         }
 
@@ -145,7 +145,7 @@
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
             color: #ffffff;
             text-shadow: var(--electric-glow);
             display: flex;
@@ -154,27 +154,39 @@
             flex-wrap: wrap;
         }
 
+        h2 {
+            font-size: 1.55rem;
+            letter-spacing: 1.5px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
         .subhead {
             font-family: var(--font-mono);
             color: var(--neon-cyan);
-            font-size: 0.9rem;
-            letter-spacing: 3px;
+            font-size: 1rem;
+            letter-spacing: 2.5px;
             margin-top: 4px;
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .voltage-indicator {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(0, 255, 102, 0.12);
+            background: rgba(0, 255, 102, 0.14);
             border: 1px solid var(--neon-emerald);
             color: var(--neon-emerald);
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 700;
             font-family: var(--font-mono);
             letter-spacing: 1px;
             animation: pulseFlicker 3s infinite;
@@ -188,21 +200,21 @@
         /* Top HUD Telemetry Bar */
         .hud-telemetry {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
             background: var(--hud-glass);
             border: 1px solid var(--hud-border);
             border-radius: 6px;
-            padding: 12px;
+            padding: 14px;
             margin-top: 14px;
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
         }
 
         .hud-cell {
-            background: rgba(0, 0, 0, 0.45);
-            border-left: 3px solid var(--neon-cyan);
-            padding: 8px 12px;
-            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.55);
+            border-left: 4px solid var(--neon-cyan);
+            padding: 10px 14px;
+            border-radius: 4px;
         }
         .hud-cell.amber { border-left-color: var(--neon-amber); }
         .hud-cell.emerald { border-left-color: var(--neon-emerald); }
@@ -210,23 +222,25 @@
 
         .hud-cell-label {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: #8da4c4;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #9cb8dd;
             letter-spacing: 1px;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .hud-cell-value {
             font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 900;
             color: #fff;
-            text-shadow: 0 0 8px var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            line-height: 1.1;
         }
         .hud-cell.amber .hud-cell-value { color: var(--neon-amber); text-shadow: var(--amber-glow); }
         .hud-cell.emerald .hud-cell-value { color: var(--neon-emerald); text-shadow: var(--emerald-glow); }
-        .hud-cell.plasma .hud-cell-value { color: #f2afff; text-shadow: 0 0 8px var(--neon-plasma); }
+        .hud-cell.plasma .hud-cell-value { color: #f2afff; text-shadow: 0 0 10px var(--neon-plasma); }
 
         /* Tactical Navigation & Mode Switchers */
         .nav-switchers {
@@ -234,30 +248,34 @@
             gap: 8px;
             flex-wrap: wrap;
             margin: 14px 0 6px 0;
+            padding-bottom: 4px;
         }
 
         .nav-btn {
             background: linear-gradient(180deg, var(--armor-plate) 0%, var(--armor-dark) 100%);
             border: 1px solid var(--metal-rim);
-            color: #a4bedc;
+            color: #b8d0ed;
             font-family: var(--font-display);
-            font-size: 0.8rem;
+            font-size: 0.88rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
-            padding: 9px 16px;
+            letter-spacing: 1.2px;
+            padding: 11px 18px;
+            min-height: 46px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            white-space: nowrap;
         }
 
         .nav-btn:hover {
             border-color: var(--neon-cyan);
             color: #fff;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
             transform: translateY(-1px);
         }
 
@@ -265,19 +283,42 @@
             background: linear-gradient(180deg, #0f354f 0%, #071f30 100%);
             border-color: var(--neon-cyan);
             color: var(--neon-cyan);
-            box-shadow: 0 0 14px rgba(0, 240, 255, 0.5), inset 0 0 8px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.5), inset 0 0 8px rgba(0, 240, 255, 0.3);
+        }
+
+        /* Fullscreen Button special styling */
+        #fs-btn {
+            background: linear-gradient(180deg, rgba(0, 240, 255, 0.18) 0%, rgba(7, 31, 48, 0.95) 100%);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-weight: 800;
+        }
+        #fs-btn:hover, #fs-btn.active {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 18px var(--neon-cyan);
         }
 
         /* Input Controls */
+        label {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #a8c4e6;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+
         input[type="text"], input[type="number"], select {
             background: #06090e;
             border: 1px solid var(--metal-rim);
             border-radius: 4px;
             color: var(--neon-cyan);
             font-family: var(--font-mono);
-            font-size: 1rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            padding: 9px 12px;
+            padding: 12px 14px;
+            min-height: 48px;
             width: 100%;
             transition: all 0.2s;
             outline: none;
@@ -286,7 +327,8 @@
 
         input[type="number"] {
             text-align: center;
-            font-size: 1.15rem;
+            font-size: 1.45rem;
+            font-weight: 900;
             letter-spacing: 1px;
         }
 
@@ -298,14 +340,14 @@
 
         input:focus, select:focus {
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5), inset 0 0 6px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 14px rgba(0, 240, 255, 0.55), inset 0 0 6px rgba(0, 240, 255, 0.2);
             color: #fff;
         }
 
         select {
             cursor: pointer;
             font-family: var(--font-display);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             letter-spacing: 1px;
             background-color: #0b111a;
             color: #fff;
@@ -315,7 +357,8 @@
         select option {
             background: #090e17;
             color: #e1ecfa;
-            padding: 8px;
+            padding: 10px;
+            font-size: 1rem;
         }
 
         /* Buttons */
@@ -325,10 +368,11 @@
             border-radius: 4px;
             color: #ffffff;
             font-family: var(--font-display);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 800;
             letter-spacing: 2px;
-            padding: 12px 20px;
+            padding: 14px 22px;
+            min-height: 52px;
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
@@ -336,6 +380,10 @@
             transition: all 0.2s;
             position: relative;
             overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .btn-action:hover {
@@ -373,8 +421,9 @@
         }
 
         .btn-small {
-            padding: 6px 12px;
-            font-size: 0.75rem;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            min-height: 38px;
             width: auto;
             letter-spacing: 1px;
         }
@@ -387,17 +436,11 @@
             margin-top: 14px;
         }
 
-        @media (max-width: 820px) {
-            .calculator-dual-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .sub-panel {
             background: rgba(8, 12, 18, 0.75);
             border: 1px solid var(--armor-light);
             border-radius: 6px;
-            padding: 14px;
+            padding: 16px;
             position: relative;
         }
 
@@ -408,16 +451,19 @@
             margin-bottom: 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--metal-rim);
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .badge-spec {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 700;
             background: rgba(0, 240, 255, 0.15);
             color: var(--neon-cyan);
             border: 1px solid rgba(0, 240, 255, 0.4);
-            padding: 2px 7px;
-            border-radius: 3px;
+            padding: 4px 10px;
+            border-radius: 4px;
         }
         .badge-spec.amber {
             background: rgba(255, 170, 0, 0.15);
@@ -444,9 +490,9 @@
 
         .input-cell label {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #89a2c2;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #bad3f5;
             text-align: center;
         }
 
@@ -454,30 +500,34 @@
         .result-hud-box {
             background: #030508;
             border: 1px solid var(--metal-rim);
-            border-left: 4px solid var(--neon-cyan);
-            padding: 10px 14px;
+            border-left: 5px solid var(--neon-cyan);
+            padding: 12px 18px;
             border-radius: 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .result-hud-box.amber { border-left-color: var(--neon-amber); }
         .result-hud-box.emerald { border-left-color: var(--neon-emerald); }
 
         .result-hud-label {
             font-family: var(--font-display);
-            font-size: 0.85rem;
-            color: #a4bedc;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #b5cfee;
             letter-spacing: 1px;
         }
 
         .result-hud-number {
             font-family: var(--font-display);
-            font-size: 1.6rem;
+            font-size: 2.2rem;
             font-weight: 900;
             color: #ffffff;
             text-shadow: var(--electric-glow);
+            line-height: 1;
         }
         .result-hud-box.amber .result-hud-number { color: var(--neon-amber); text-shadow: var(--amber-glow); }
         .result-hud-box.emerald .result-hud-number { color: var(--neon-emerald); text-shadow: var(--emerald-glow); }
@@ -486,15 +536,17 @@
         .formula-ribbon {
             background: rgba(0, 0, 0, 0.7);
             border: 1px dashed var(--metal-rim);
-            padding: 8px 12px;
+            padding: 12px 16px;
             border-radius: 4px;
             font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: #9cb5d6;
+            font-size: 0.95rem;
+            color: #a7c1e3;
             margin: 12px 0;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
+            line-height: 1.5;
+            word-break: break-word;
         }
 
         .formula-line {
@@ -506,7 +558,8 @@
 
         .formula-highlight {
             color: var(--neon-cyan);
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.05rem;
         }
         .formula-highlight.amber { color: var(--neon-amber); }
         .formula-highlight.emerald { color: var(--neon-emerald); }
@@ -516,19 +569,20 @@
             background: #05080e;
             border: 1px solid var(--armor-light);
             border-radius: 4px;
-            padding: 8px 12px;
+            padding: 10px 14px;
             margin-top: 10px;
         }
         .stack-meter-title {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: #7991b0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #8da6c7;
             margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
         }
         .tier-progress-track {
-            height: 10px;
+            height: 14px;
             background: #111722;
             border-radius: 3px;
             overflow: hidden;
@@ -556,11 +610,11 @@
             border: 1px solid var(--metal-rim);
             border-top: 3px solid var(--neon-cyan);
             border-radius: 6px;
-            padding: 14px;
+            padding: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
         .brand-card.amber-top { border-top-color: var(--neon-amber); }
         .brand-card.emerald-top { border-top-color: var(--neon-emerald); }
@@ -570,18 +624,21 @@
         .flavor-chips-rack {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 6px;
             margin: 8px 0;
         }
         .flavor-chip {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #bacfe8;
-            font-size: 0.75rem;
-            padding: 2px 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: #c7dbf2;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 4px 10px;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
         }
         .flavor-chip:hover, .flavor-chip.active {
             background: rgba(0, 240, 255, 0.25);
@@ -596,23 +653,25 @@
             border-radius: 6px;
             background: #03060a;
             max-height: 480px;
+            -webkit-overflow-scrolling: touch;
         }
 
         table.log-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             text-align: left;
             font-family: var(--font-mono);
+            min-width: 650px;
         }
 
         table.log-table th {
             background: #0d1420;
             color: var(--neon-cyan);
             font-family: var(--font-display);
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border-bottom: 2px solid var(--metal-rim);
             position: sticky;
             top: 0;
@@ -620,7 +679,7 @@
         }
 
         table.log-table td {
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
             transition: background 85ms ease;
         }
@@ -633,10 +692,12 @@
             background: transparent;
             border: 1px solid var(--neon-crimson);
             color: var(--neon-crimson);
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.7rem;
-            padding: 2px 6px;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            min-height: 32px;
+            min-width: 32px;
             transition: all 0.2s;
         }
         .btn-delete-entry:hover {
@@ -652,6 +713,90 @@
         }
         .surge-active {
             animation: powerSurgeFlash 0.5s ease-out;
+        }
+
+        /* RESPONSIVE BREAKPOINTS (Tablet & Mobile UX) */
+        @media (max-width: 900px) {
+            .calculator-dual-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            .mech-panel {
+                padding: 14px 10px;
+                margin-bottom: 14px;
+            }
+            .hud-telemetry {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: 10px;
+            }
+            .hud-cell {
+                padding: 8px 10px;
+            }
+            .hud-cell-value {
+                font-size: 1.55rem;
+            }
+            .hud-cell-label {
+                font-size: 0.76rem;
+            }
+            .nav-switchers {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .brand-loc-grid, .vault-filter-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+            .matrix-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 6px;
+                font-size: 16px;
+            }
+            h1 {
+                font-size: 1.35rem;
+            }
+            .subhead {
+                font-size: 0.85rem;
+                letter-spacing: 1px;
+            }
+            .inputs-matrix {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8px;
+            }
+            .inputs-matrix.three-col {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .inputs-matrix.three-col .input-cell:last-child {
+                grid-column: span 2;
+            }
+            .hud-telemetry {
+                grid-template-columns: 1fr 1fr;
+            }
+            .result-hud-number {
+                font-size: 1.7rem;
+            }
+            .result-hud-label {
+                font-size: 0.95rem;
+            }
+            .btn-action {
+                font-size: 0.95rem;
+                padding: 12px 16px;
+            }
+            .flavor-chip {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
         }
 
         /* Reduced Motion Compliance */
@@ -741,7 +886,7 @@
         <p style="color: #7b94b5; font-size: 0.85rem; margin: 4px 0 12px 0;">SELECT PRODUCT PROFILE TO ENGAGE ARITHMETIC MULTIPLIERS</p>
 
         <!-- Brand Selector Dropdown -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+        <div class="brand-loc-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
             <div>
                 <label style="font-family: var(--font-mono); font-size: 0.75rem; color: #8ea6c7;">SELECT BEVERAGE LINE & PACK FORMAT:</label>
                 <select id="brand-select" onchange="updateBrandContext()">
@@ -1122,7 +1267,7 @@
         </div>
 
         <!-- Search & Filter Controls -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 14px 0;">
+        <div class="vault-filter-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 14px 0;">
             <div>
                 <input type="text" id="vault-search-input" placeholder="🔍 SEARCH LOGS (BRAND, LOT, LOCATION, OR TYPE)..." oninput="filterVaultLogs()">
             </div>
@@ -2055,15 +2200,67 @@
         toast.timer = setTimeout(() => toast.style.display = 'none', 2800);
     }
 
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
-            document.getElementById('fs-btn').classList.add('active');
+    /* Fullscreen Toggle & Event Sync */
+    function isFullScreen() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+    }
+
+    function updateFullscreenUI() {
+        const btn = document.getElementById('fs-btn');
+        if (!btn) return;
+        if (isFullScreen()) {
+            btn.classList.add('active');
+            btn.innerHTML = '<span>🗗</span> EXIT FULLSCREEN';
         } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-            document.getElementById('fs-btn').classList.remove('active');
+            btn.classList.remove('active');
+            btn.innerHTML = '<span>⛶</span> FULLSCREEN';
         }
     }
+
+    async function toggleFullScreen() {
+        try {
+            if (!isFullScreen()) {
+                const doc = document.documentElement;
+                if (doc.requestFullscreen) {
+                    await doc.requestFullscreen();
+                } else if (doc.webkitRequestFullscreen) {
+                    await doc.webkitRequestFullscreen();
+                } else if (doc.mozRequestFullScreen) {
+                    await doc.mozRequestFullScreen();
+                } else if (doc.msRequestFullscreen) {
+                    await doc.msRequestFullscreen();
+                }
+                showToast("FULLSCREEN ENGAGED");
+            } else {
+                if (document.exitFullscreen) {
+                    await document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    await document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    await document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    await document.msExitFullscreen();
+                }
+                showToast("EXITED FULLSCREEN");
+            }
+        } catch (err) {
+            console.warn("Fullscreen toggle error:", err);
+            showToast("FULLSCREEN RESTRICTED BY BROWSER ENVIRONMENT");
+        }
+        updateFullscreenUI();
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenUI);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
+    document.addEventListener('mozfullscreenchange', updateFullscreenUI);
+    document.addEventListener('MSFullscreenChange', updateFullscreenUI);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'F11') {
+            e.preventDefault();
+            toggleFullScreen();
+        }
+    });
 
     /* State Preservation */
     function saveState() {
