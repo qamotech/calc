@@ -1,6 +1,6 @@
 /* CalcUN8R service worker — offline-capable app shell.
    Bump CACHE_VERSION whenever the precache list or app shell changes. */
-const CACHE_VERSION = 'calcun8r-v1';
+const CACHE_VERSION = 'calcun8r-v2';
 const CORE = [
   './',
   './index.html',

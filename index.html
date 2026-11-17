@@ -893,6 +893,19 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* History Tape (pick #70) */
+        .tape-list { max-height: 340px; overflow-y: auto; background: #05070b; border: 1px dashed #2a3d55; border-radius: 6px; padding: 10px 12px; font-family: 'Courier New', monospace; }
+        .tape-entry { padding: 8px 4px; border-bottom: 1px dotted #22344d; }
+        .tape-entry:last-child { border-bottom: none; }
+        .tape-meta { display: flex; justify-content: space-between; gap: 8px; font-size: 0.72rem; color: #7d94b2; letter-spacing: .5px; }
+        .tape-label { font-weight: 700; color: var(--neon-cyan); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .tape-expr { color: #cfe3f5; font-size: 0.88rem; word-break: break-word; margin-top: 2px; }
+        .tape-result { color: #fff; font-weight: 700; font-size: 1.02rem; text-shadow: 0 0 8px var(--neon-cyan); white-space: nowrap; }
+        .tape-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .tape-mini-btn { background: transparent; border: 1px solid #2a3d55; color: #9db8d2; border-radius: 4px; min-width: 30px; min-height: 30px; cursor: pointer; font-size: .8rem; }
+        .tape-mini-btn:hover { border-color: var(--neon-cyan); color: #fff; }
+        .tape-empty { text-align: center; color: #5f7594; padding: 22px 8px; font-size: .85rem; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -958,6 +971,9 @@
             </button>
             <button class="nav-btn" id="nav-vault" onclick="scrollToVault()">
                 <span>💾</span> DATA VAULT [LOGS]
+            </button>
+            <button class="nav-btn" id="nav-tape" onclick="scrollToTape()">
+                <span>🧾</span> HISTORY TAPE <span id="tape-nav-count"></span>
             </button>
         </nav>
     </header>
@@ -1338,6 +1354,29 @@
     <!-- =============================================================== -->
     <!-- DATA VAULT 2.0 // ACTION LOG & EXPORT ENGINE (UI Improvement 4) -->
     <!-- =============================================================== -->
+    <!-- =============================================================== -->
+    <!-- HISTORY TAPE // RUNNING CALCULATION TAPE (pick #70)           -->
+    <!-- =============================================================== -->
+    <section class="mech-panel electric-border" id="history-tape-panel" style="margin-top: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <h2>🧾 HISTORY TAPE // EVERY CALCULATION, ON THE RECORD</h2>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="nav-btn" style="border-color: var(--neon-cyan); color: var(--neon-cyan);" onclick="copyTapeToClipboard()">
+                    <span>📋</span> COPY TAPE
+                </button>
+                <button class="nav-btn btn-crimson" id="btn-clear-tape" onclick="clearTape()">
+                    <span>🗑️</span> CLEAR TAPE
+                </button>
+            </div>
+        </div>
+        <p style="color:#7d94b2; font-size:.82rem; margin:10px 0;">Every logged count drops its full math here — expression = result — so you can re-check or text the tape later. Tap 📋 on any line to copy just that calculation.</p>
+        <div class="tape-list" id="tape-list"></div>
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:10px; font-family: var(--font-display); letter-spacing:1px;">
+            <span id="tape-count" style="color:#7d94b2;">0 ENTRIES</span>
+            <span id="tape-grand-total" style="color:#fff; font-weight:700;">TAPE TOTAL: 0</span>
+        </div>
+    </section>
+
     <section class="mech-panel electric-border" id="data-vault-panel" style="margin-top: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <h2>DATA VAULT // AUDIT & SHIFT HANDOVER LOG</h2>
@@ -1487,6 +1526,11 @@
 
     let actionLog = JSON.parse(localStorage.getItem('cyberCountLog_v4')) || [];
 
+    /* HISTORY TAPE state (pick #70) — expression + result per logged calculation */
+    let tapeLog = [];
+    try { tapeLog = JSON.parse(localStorage.getItem('calcun8rTape_v1')) || []; } catch (e) { tapeLog = []; }
+    if (!Array.isArray(tapeLog)) tapeLog = [];
+
     /* =====================================================================
        INITIALIZATION
        ===================================================================== */
@@ -1498,6 +1542,7 @@
         updateBritesContext();
         loadSavedState();
         renderLogTable();
+        renderTape();
         updateHUDTotals();
 
         if (document.getElementById('custom-parameters-container').children.length === 0) {
@@ -1807,6 +1852,7 @@
                 breakdown: `${fp}p / ${fr}r / ${fc}c / ${fu}u`,
                 total: fTotal
             });
+            addTapeEntry(data.name + ' — FILLED', `(${fp}×${data.filled.P.toLocaleString()}) + (${fr}×${data.filled.R.toLocaleString()}) + (${fc}×${data.filled.C}) + ${fu}`, fTotal, 'CANS');
             logged = true;
         }
 
@@ -1821,6 +1867,7 @@
                 breakdown: `${ep}p / ${er}r / ${eu}u`,
                 total: eTotal
             });
+            addTapeEntry(data.name + ' — EMPTY', `(${ep}×${data.empty.P.toLocaleString()}) + (${er}×${data.empty.R.toLocaleString()}) + ${eu}`, eTotal, 'CANS');
             logged = true;
         }
 
@@ -1875,6 +1922,7 @@
             breakdown: `${p}p / ${r}r / ${b}b / ${c}c`,
             total
         });
+        addTapeEntry('BELLE VIE (PACKAGING CARTONS)', `(${p} × 6,800) + (${r} × 1,360) + (${b} × 170) + ${c}`, total, 'CARTONS');
 
         persistVaultLogs();
         clearCartonInputs();
@@ -1945,6 +1993,7 @@
             breakdown: `${p}p / ${r}r / ${u}u`,
             total
         });
+        addTapeEntry(`BRITES (${spec.name.toUpperCase()}) — EMPTY`, `(${p} × ${spec.P.toLocaleString()}) + (${r} × ${spec.R.toLocaleString()}) + ${u}`, total, 'CANS');
 
         persistVaultLogs();
         clearBritesInputs();
@@ -2012,6 +2061,13 @@
         const lot = document.getElementById('custom-lot').value.trim().toUpperCase() || 'N/A';
         const time = new Date().toLocaleTimeString();
 
+        let customParts = [];
+        document.querySelectorAll('#custom-parameters-container > div').forEach(row => {
+            const nm = (row.querySelector('.cust-p-name').value || 'Tier').trim();
+            const mult = parseInt(row.querySelector('.cust-p-mult').value) || 0;
+            const qty = parseInt(row.querySelector('.cust-p-qty').value) || 0;
+            if (qty && mult) customParts.push(`${nm}: (${qty} × ${mult.toLocaleString()})`);
+        });
         actionLog.push({
             id: createSaveID(brand),
             time,
@@ -2022,6 +2078,7 @@
             breakdown: "Custom Multipliers",
             total
         });
+        addTapeEntry(brand + ' — CUSTOM', customParts.length ? customParts.join(' + ') : 'Custom Multipliers', total, 'UNITS');
 
         persistVaultLogs();
         resetCustomCalculator();
@@ -2038,6 +2095,129 @@
         document.getElementById('custom-total').innerText = '0';
         saveState();
         showToast("CUSTOM CALCULATOR RESET");
+    }
+
+    /* =====================================================================
+       HISTORY TAPE ENGINE (pick #70) — running calculation tape
+       ===================================================================== */
+    const TAPE_MAX = 100;
+    function persistTape() {
+        try { localStorage.setItem('calcun8rTape_v1', JSON.stringify(tapeLog)); } catch (e) {}
+        renderTape();
+    }
+    function addTapeEntry(label, expression, result, unit) {
+        tapeLog.push({
+            id: 'tape-' + Date.now() + '-' + Math.floor(Math.random() * 100000),
+            time: new Date().toLocaleTimeString(),
+            label: String(label || 'CALCULATION'),
+            expression: String(expression || ''),
+            result: Number(result) || 0,
+            unit: String(unit || '')
+        });
+        while (tapeLog.length > TAPE_MAX) tapeLog.shift();
+        persistTape();
+    }
+    function tapeEntryText(e) {
+        return `${e.label} — ${e.expression} = ${e.result.toLocaleString()}${e.unit ? ' ' + e.unit : ''}`;
+    }
+    function renderTape() {
+        const list = document.getElementById('tape-list');
+        if (!list) return;
+        list.innerHTML = '';
+        if (tapeLog.length === 0) {
+            const d = document.createElement('div');
+            d.className = 'tape-empty';
+            d.textContent = '🧾 TAPE IS EMPTY — LOG A COUNT AND ITS MATH LANDS HERE';
+            list.appendChild(d);
+        } else {
+            tapeLog.forEach((e) => {
+                const row = document.createElement('div');
+                row.className = 'tape-entry';
+                const meta = document.createElement('div'); meta.className = 'tape-meta';
+                const lab = document.createElement('span'); lab.className = 'tape-label'; lab.textContent = e.label;
+                const tim = document.createElement('span'); tim.textContent = e.time || '';
+                meta.appendChild(lab); meta.appendChild(tim);
+                const expr = document.createElement('div'); expr.className = 'tape-expr';
+                expr.textContent = e.expression + '  =  ';
+                const res = document.createElement('span'); res.className = 'tape-result';
+                res.textContent = e.result.toLocaleString() + (e.unit ? ' ' + e.unit : '');
+                expr.appendChild(res);
+                const acts = document.createElement('div'); acts.className = 'tape-actions';
+                const cp = document.createElement('button'); cp.type = 'button'; cp.className = 'tape-mini-btn'; cp.title = 'Copy this calculation'; cp.textContent = '📋';
+                cp.onclick = function() { copyTapeText(tapeEntryText(e), 'CALCULATION COPIED!'); };
+                const del = document.createElement('button'); del.type = 'button'; del.className = 'tape-mini-btn'; del.title = 'Remove from tape'; del.textContent = '✕';
+                del.onclick = function() { deleteTapeEntry(e.id); };
+                acts.appendChild(cp); acts.appendChild(del);
+                const wrap = document.createElement('div');
+                wrap.style.display = 'flex'; wrap.style.justifyContent = 'space-between'; wrap.style.gap = '8px'; wrap.style.alignItems = 'flex-start';
+                const left = document.createElement('div'); left.style.flex = '1'; left.style.minWidth = '0';
+                left.appendChild(meta); left.appendChild(expr);
+                wrap.appendChild(left); wrap.appendChild(acts);
+                row.appendChild(wrap);
+                list.appendChild(row);
+            });
+            list.scrollTop = list.scrollHeight;
+        }
+        const cnt = document.getElementById('tape-count');
+        if (cnt) cnt.textContent = tapeLog.length + (tapeLog.length === 1 ? ' ENTRY' : ' ENTRIES');
+        const gt = document.getElementById('tape-grand-total');
+        if (gt) gt.textContent = 'TAPE TOTAL: ' + tapeLog.reduce((a, e) => a + (e.result || 0), 0).toLocaleString();
+        const nav = document.getElementById('tape-nav-count');
+        if (nav) nav.textContent = tapeLog.length ? '[' + tapeLog.length + ']' : '';
+    }
+    function deleteTapeEntry(id) {
+        tapeLog = tapeLog.filter(e => e.id !== id);
+        persistTape();
+        showToast('TAPE ENTRY REMOVED');
+    }
+    let tapeClearPending = false; let tapeClearTimeout = null;
+    function clearTape() {
+        const btn = document.getElementById('btn-clear-tape');
+        if (!tapeLog.length) { showToast('HISTORY TAPE IS ALREADY EMPTY'); return; }
+        if (!tapeClearPending) {
+            tapeClearPending = true;
+            if (btn) { btn.dataset.origText = btn.innerHTML; btn.innerHTML = '<span>⚠️</span> CLICK AGAIN TO CONFIRM'; btn.style.background = 'var(--neon-crimson)'; btn.style.color = '#fff'; }
+            showToast('CLICK CLEAR TAPE AGAIN TO CONFIRM');
+            tapeClearTimeout = setTimeout(() => { tapeClearPending = false; if (btn && btn.dataset.origText) { btn.innerHTML = btn.dataset.origText; btn.style.background = ''; btn.style.color = ''; } }, 4000);
+        } else {
+            clearTimeout(tapeClearTimeout); tapeClearPending = false;
+            if (btn && btn.dataset.origText) { btn.innerHTML = btn.dataset.origText; btn.style.background = ''; btn.style.color = ''; }
+            tapeLog = []; persistTape(); showToast('HISTORY TAPE CLEARED');
+        }
+    }
+    function copyTapeText(text, okMsg) {
+        function fallback() {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                document.body.appendChild(ta); ta.focus(); ta.select();
+                const ok = document.execCommand('copy'); document.body.removeChild(ta);
+                if (ok) { showToast(okMsg); return; }
+            } catch (e) {}
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
+            const url = URL.createObjectURL(blob); const a = document.createElement('a');
+            a.href = url; a.download = 'CalcUN8R_Tape_' + new Date().toISOString().split('T')[0] + '.txt';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            showToast('TAPE DOWNLOADED AS FILE');
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => showToast(okMsg)).catch(fallback);
+        } else { fallback(); }
+    }
+    function copyTapeToClipboard() {
+        if (!tapeLog.length) { showToast('HISTORY TAPE IS EMPTY. NOTHING TO COPY.'); return; }
+        let text = '========================================================\n';
+        text += 'CALCUN8R // HISTORY TAPE\n';
+        text += `DATE: ${new Date().toLocaleDateString()} | COPIED: ${new Date().toLocaleTimeString()}\n`;
+        text += '========================================================\n';
+        tapeLog.forEach((e, i) => { text += `[${i+1}] ${e.time} | ${tapeEntryText(e)}\n`; });
+        text += '--------------------------------------------------------\n';
+        text += `ENTRIES: ${tapeLog.length} | TAPE TOTAL: ${tapeLog.reduce((a, e) => a + (e.result || 0), 0).toLocaleString()}\n`;
+        text += '========================================================\n';
+        copyTapeText(text, 'HISTORY TAPE COPIED TO CLIPBOARD!');
+    }
+    function scrollToTape() {
+        document.getElementById('history-tape-panel').scrollIntoView({ behavior: 'smooth' });
     }
 
     /* =====================================================================
@@ -2090,6 +2270,7 @@
                 breakdown: `${fp}p / ${fr}r / ${fc}c / ${fu}u`,
                 total: fTotal
             });
+            addTapeEntry(brand.name + ' — FILLED', `(${fp}×${brand.filled.P.toLocaleString()}) + (${fr}×${brand.filled.R.toLocaleString()}) + (${fc}×${brand.filled.C}) + ${fu}`, fTotal, 'CANS');
             logged = true;
         }
 
@@ -2104,6 +2285,7 @@
                 breakdown: `${ep}p / ${er}r / ${eu}u`,
                 total: eTotal
             });
+            addTapeEntry(brand.name + ' — EMPTY', `(${ep}×${brand.empty.P.toLocaleString()}) + (${er}×${brand.empty.R.toLocaleString()}) + ${eu}`, eTotal, 'CANS');
             logged = true;
         }
 
